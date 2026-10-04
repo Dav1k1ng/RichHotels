@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HOTEL — plateau 3D</title>
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+<canvas id="view"></canvas>
+
+<header id="topbar">
+  <h1>HOTEL</h1>
+  <div id="turn"></div>
+  <div class="spacer"></div>
+  <div id="legend"></div>
+  <button id="btn-rules" class="btn ghost">Règles</button>
+</header>
+
+<aside id="left">
+  <div id="players"></div>
+
+  <section id="deeds" class="panel-box">
+    <button id="deeds-toggle" class="box-head">Titres de propriété</button>
+    <div id="deeds-body" class="box-body"></div>
+  </section>
+</aside>
+
+<section id="actions"></section>
+
+<div id="dice-tray">
+  <div class="die-wrap"><span>classique</span><div id="die-classic"></div></div>
+  <div class="die-wrap"><span>permis</span><div id="die-permit"></div></div>
+</div>
+
+<section id="log" class="panel-box">
+  <button id="log-toggle" class="box-head">Journal de la partie</button>
+  <div id="log-body" class="box-body"></div>
+</section>
+
+<div id="modal"></div>
+
+<div id="setup">
+  <div class="modal-card">
+    <h2>HOTEL</h2>
+    <p class="hint">Plateau 3D d'après la notice Lansay 2023 (réf. 75021).</p>
+    <h4>Nombre de joueurs</h4>
+    <div id="setup-count" class="seg">
+      <button data-n="2">2</button>
+      <button data-n="3">3</button>
+      <button data-n="4">4</button>
+    </div>
+    <p class="hint">Dotation initiale : <strong id="setup-money">12 000</strong> par joueur.</p>
+    <div id="setup-names"></div>
+    <button id="setup-go" class="btn primary">Commencer la partie</button>
+  </div>
+</div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

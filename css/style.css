@@ -1,0 +1,235 @@
+/* HOTEL — habillage de l'interface. Thème sombre « nuit en ville », accents
+   repris de la boîte du jeu (bleu nuit, or, blanc cassé). */
+
+:root {
+  --bg: #07172b;
+  --panel: rgba(10, 28, 48, 0.88);
+  --panel-solid: #0c2238;
+  --line: rgba(255, 255, 255, 0.12);
+  --text: #e8eef6;
+  --muted: #92a6bd;
+  --gold: #e8c22a;
+  --good: #35c96a;
+  --bad: #e2574a;
+  --r: 12px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; height: 100%; overflow: hidden;
+  background: var(--bg); color: var(--text);
+  font: 14px/1.45 "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+#view { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+
+button, input, select { font: inherit; color: inherit; }
+
+/* ------------------------------------------------------------- barre haute */
+#topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 54px;
+  display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  background: linear-gradient(180deg, rgba(5, 18, 34, .95), rgba(5, 18, 34, .55));
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(8px);
+  z-index: 5;
+}
+#topbar h1 {
+  margin: 0; font: 700 22px/1 Georgia, serif; letter-spacing: .22em;
+  color: var(--gold);
+}
+#turn { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.spacer { flex: 1; }
+
+.dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; flex: none; }
+
+#legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 11px; color: var(--muted); }
+.leg { display: inline-flex; align-items: center; gap: 5px; }
+.leg i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+
+/* ------------------------------------------------------------- colonne gauche */
+#left {
+  position: fixed; top: 66px; left: 12px; width: 290px;
+  display: flex; flex-direction: column; gap: 10px;
+  max-height: calc(100vh - 230px); z-index: 4;
+}
+
+#players { display: flex; flex-direction: column; gap: 8px; }
+
+.player {
+  background: var(--panel); border: 1px solid var(--line);
+  border-left: 4px solid var(--c); border-radius: var(--r);
+  padding: 8px 10px; backdrop-filter: blur(8px);
+}
+.player.active { box-shadow: 0 0 0 1px var(--c), 0 6px 22px rgba(0, 0, 0, .45); }
+.player.dead { opacity: .4; filter: grayscale(1); }
+.p-head { display: flex; justify-content: space-between; align-items: baseline; }
+.p-name { font-weight: 700; }
+.p-money { color: var(--gold); font-variant-numeric: tabular-nums; }
+.p-plots { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.chip {
+  font-size: 11px; padding: 2px 6px; border-radius: 999px;
+  border: 1px solid var(--line); cursor: pointer; white-space: nowrap;
+}
+.chip:hover { background: rgba(255, 255, 255, .08); }
+.muted { color: var(--muted); font-size: 12px; }
+
+/* ------------------------------------------------------------- boîtes repliables */
+.panel-box {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--r);
+  backdrop-filter: blur(8px); overflow: hidden; display: flex; flex-direction: column;
+  min-height: 0;
+}
+.box-head {
+  all: unset; cursor: pointer; padding: 8px 12px; font-weight: 600; font-size: 13px;
+  border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, .04);
+}
+.box-head::before { content: '▾ '; color: var(--muted); }
+.panel-box.collapsed .box-head::before { content: '▸ '; }
+.panel-box.collapsed .box-body { display: none; }
+.box-body { overflow: auto; padding: 8px; min-height: 0; }
+
+#deeds { flex: 1; min-height: 0; }
+.deed {
+  border-left: 3px solid var(--c); padding: 5px 8px; border-radius: 6px;
+  cursor: pointer; margin-bottom: 4px; background: rgba(255, 255, 255, .03);
+}
+.deed:hover { background: rgba(255, 255, 255, .09); }
+.deed-top { display: flex; justify-content: space-between; }
+.deed-land { color: var(--gold); font-variant-numeric: tabular-nums; }
+.deed-sub { font-size: 11px; color: var(--muted); }
+
+/* ------------------------------------------------------------- journal */
+#log {
+  position: fixed; right: 12px; top: 66px; width: 320px;
+  max-height: 38vh; z-index: 4;
+}
+#log-body { font-size: 12px; color: #cbd8e8; }
+.log-line { padding: 2px 0; border-bottom: 1px solid rgba(255, 255, 255, .05); }
+
+/* ------------------------------------------------------------- actions */
+#actions {
+  position: fixed; left: 50%; transform: translateX(-50%); bottom: 14px;
+  width: min(640px, calc(100vw - 420px));
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 12px 14px; backdrop-filter: blur(10px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .5); z-index: 6;
+}
+#actions:empty { display: none; }
+.act-head h3 { margin: 0 0 2px; font: 600 15px/1.3 "Segoe UI", sans-serif; }
+.hint { margin: 0 0 8px; font-size: 12px; color: var(--muted); }
+.act-body { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+.btn {
+  all: unset; cursor: pointer; padding: 7px 13px; border-radius: 9px;
+  background: rgba(255, 255, 255, .08); border: 1px solid var(--line);
+  font-size: 13px; transition: background .12s, transform .08s;
+}
+.btn:hover:not(:disabled) { background: rgba(255, 255, 255, .17); }
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn.primary { background: var(--gold); color: #1a1405; font-weight: 700; border-color: transparent; }
+.btn.primary:hover { background: #f5d44a; }
+.btn.danger { background: var(--bad); color: #fff; border-color: transparent; }
+.btn.ghost { background: transparent; }
+
+.row { display: flex; align-items: center; gap: 8px; width: 100%; margin: 4px 0; }
+.row-label { min-width: 120px; }
+.row input, .row select {
+  background: rgba(0, 0, 0, .3); border: 1px solid var(--line);
+  border-radius: 7px; padding: 5px 8px; flex: 1; min-width: 80px;
+}
+.spots { display: flex; flex-wrap: wrap; gap: 6px; max-height: 120px; overflow: auto; width: 100%; }
+
+/* ------------------------------------------------------------- dés */
+#dice-tray {
+  position: fixed; right: 18px; bottom: 18px; display: flex; gap: 22px; z-index: 6;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 12px 18px; backdrop-filter: blur(10px);
+}
+.die-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.die-wrap > span { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+.die-scene { width: 56px; height: 56px; perspective: 400px; }
+.die-cube {
+  width: 56px; height: 56px; position: relative; transform-style: preserve-3d;
+  transform: rotateX(-18deg) rotateY(22deg);
+}
+.die-face {
+  position: absolute; inset: 0; border-radius: 9px;
+  background: #f3f5f8; border: 1px solid #c9d2db;
+  display: grid; place-items: center;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, .12);
+}
+.die-permit .die-face { background: #16324f; border-color: #2c597f; }
+.die-face.front  { transform: translateZ(28px); }
+.die-face.back   { transform: rotateY(180deg) translateZ(28px); }
+.die-face.right  { transform: rotateY(90deg) translateZ(28px); }
+.die-face.left   { transform: rotateY(-90deg) translateZ(28px); }
+.die-face.top    { transform: rotateX(90deg) translateZ(28px); }
+.die-face.bottom { transform: rotateX(-90deg) translateZ(28px); }
+
+.pips { width: 70%; height: 70%; display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); }
+.pips i { border-radius: 50%; margin: 18%; }
+.pips i.on { background: #16324f; }
+
+.pf { width: 26px; height: 26px; border-radius: 6px; display: grid; place-items: center; }
+.pf.red { background: #e2574a; }
+.pf.green { background: #35c96a; }
+.pf.letter { background: #f3f5f8; color: #16324f; font: 800 20px/1 Georgia, serif; }
+
+/* ------------------------------------------------------------- modales */
+#modal, #setup {
+  position: fixed; inset: 0; display: none; place-items: center; z-index: 20;
+  background: rgba(3, 10, 20, .72); backdrop-filter: blur(4px); padding: 20px;
+}
+#modal.open, #setup.open { display: grid; }
+.modal-card {
+  position: relative; width: min(560px, 100%); max-height: 86vh; overflow: auto;
+  background: var(--panel-solid); border: 1px solid var(--line);
+  border-radius: 16px; padding: 22px 24px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
+}
+.modal-card h2 { margin: 0 0 4px; font: 700 20px/1.2 Georgia, serif; color: var(--gold); }
+.modal-card h4 { margin: 16px 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.modal-card p, .modal-card li { font-size: 13px; }
+.modal-close {
+  all: unset; cursor: pointer; position: absolute; top: 12px; right: 16px;
+  color: var(--muted); font-size: 16px;
+}
+.modal-close:hover { color: #fff; }
+.modal-body { display: block; }
+
+.deed-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.deed-table td { padding: 4px 6px; border-bottom: 1px solid rgba(255, 255, 255, .07); }
+.deed-table td.num { text-align: right; color: var(--gold); font-variant-numeric: tabular-nums; }
+.deed-table tr.cur { background: rgba(232, 194, 42, .14); }
+.deed-table tr.cur td { font-weight: 700; }
+
+.seg { display: flex; gap: 6px; margin-bottom: 10px; }
+.seg button {
+  all: unset; cursor: pointer; padding: 6px 16px; border-radius: 9px;
+  border: 1px solid var(--line); background: rgba(255, 255, 255, .06);
+}
+.seg button.on { background: var(--gold); color: #1a1405; font-weight: 700; }
+#setup-names { margin: 10px 0 16px; }
+
+/* ------------------------------------------------------------- flash */
+.flash {
+  position: fixed; left: 50%; top: 96px; transform: translateX(-50%);
+  background: var(--panel-solid); border: 1px solid var(--line);
+  border-radius: 10px; padding: 10px 20px; font-weight: 700; z-index: 30;
+  animation: pop .25s ease-out, fade .4s ease-in 1.8s forwards;
+}
+.flash.good { border-color: var(--good); color: var(--good); }
+.flash.bad { border-color: var(--bad); color: var(--bad); }
+@keyframes pop { from { transform: translateX(-50%) scale(.85); opacity: 0; } }
+@keyframes fade { to { opacity: 0; } }
+
+@media (max-width: 1100px) {
+  #left { width: 230px; }
+  #log { width: 240px; }
+  #actions { width: min(560px, calc(100vw - 40px)); bottom: 110px; }
+}
